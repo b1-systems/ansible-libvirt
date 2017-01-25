@@ -1,5 +1,6 @@
 ---
 # file: roles/libvirt/defaults/main.yml
+libvirt_package_state: present
 libvirt_firewalld: true
 libvirt_selinux: true
 libvirt_port: 16509

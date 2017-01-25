@@ -2,14 +2,29 @@
 # file: roles/libvirt/tasks/install.yml
 - name: Installing libvirt packages
   package:
-    name={{ item }}
-    state=latest
+    name: "{{ item }}"
+    state: "{{ libvirt_package_state }}"
   with_items: "{{ libvirt_packages }}"
+
+- name: Install zypper patterns for libvirt
+  zypper:
+    name: "{{ item }}"
+    type: 'pattern'
+    state: "{{ libvirt_package_state }}"
+  with_items: "{{ libvirt_package_patterns }}" 
+  when: ( ansible_os_family == 'Suse' and libvirt_package_patterns != {} )
+
+- name: Install yum Package groups
+  yum:
+    name: "{{ item }}"
+    state: "{{ libvirt_package_state }}"
+  with_items: "{{ libvirt_package_patterns }}" 
+  when: ( ansible_os_family == 'RedHat' and libvirt_package_patterns != {} )
 
 - name: Enabling and starting libvirtd service
   service:
-    name=libvirtd
-    state=started
-    enabled=yes
+    name: "{{ libvirt_service_name }}"
+    state: started
+    enabled: yes
 
 - meta: flush_handlers

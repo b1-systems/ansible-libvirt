@@ -1,13 +1,14 @@
 ---
 # file: roles/libvirt/vars/RedHat.yml
-libvirt_packages:
-  - libvirt-daemon-kvm
+libvirt_firewalld: false
+libvirt_selinux: false
+libvirt_packages: []
 libvirt_package_patterns:
-  - 'Virtualization Host'
+  - kvm_server
+  - kvm_tools
 libvirt_service_name: 'libvirtd'
 libvirt_daemon_config_file: /etc/sysconfig/libvirtd
 libvirt_config_file: /etc/libvirt/libvirtd.conf
 libvirt_qemu_config_file: /etc/libvirt/qemu.conf
 libvirt_daemon_config:
   - { option: 'LIBVIRTD_ARGS', value: 'LIBVIRTD_ARGS="--listen"' }
-
